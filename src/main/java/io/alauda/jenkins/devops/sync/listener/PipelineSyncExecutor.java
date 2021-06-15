@@ -254,6 +254,7 @@ public class PipelineSyncExecutor implements Runnable {
       addURLsToAnnotations(run, pipelineCopy);
       addBadgesToAnnotations(run, pipelineCopy);
       addSCMToAnnotations(run, pipelineCopy);
+      addSCMLabels(run, pipelineCopy);
       addTestResultAnnotations(run, pipelineCopy);
       addCausesToAnnotation(run, pipelineCopy);
       addRunDetailsToStatus(run, pipelineCopy);
@@ -541,6 +542,31 @@ public class PipelineSyncExecutor implements Runnable {
       return logsBlueOceanUrl;
     }
     throw new PipelineException("Unable to find ClassLoader");
+  }
+
+  private void addSCMLabels(@Nonnull Run run, V1alpha1Pipeline pipeline) {
+    if (!(run instanceof WorkflowRun)) {
+      return;
+    }
+
+    Map<String, String> annotations = pipeline.getMetadata().getAnnotations();
+    if (annotations == null) {
+      return;
+    }
+    if (annotations.get(ANNOTATION_PIPELINE_BRANCH.get().toString()) == null) {
+      return;
+    }
+    Map<String, String> labels = pipeline.getMetadata().getLabels();
+    if (labels == null) {
+      return;
+    }
+    if (!labels.containsKey(PIPELINE_BUILD_OBJECT_BRANCH)) {
+      return;
+    }
+    if (labels.get(PIPELINE_BUILD_OBJECT_BRANCH) != "") {
+      return;
+    }
+    labels.put(PIPELINE_BUILD_OBJECT_BRANCH, annotations.get(ANNOTATION_PIPELINE_BRANCH.get().toString()));
   }
 
   private void addSCMToAnnotations(@Nonnull Run run, V1alpha1Pipeline pipeline) {

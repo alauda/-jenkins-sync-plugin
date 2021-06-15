@@ -258,4 +258,8 @@ public final class Constants {
 
   public static final String PIPELINE_MANUAL_TRIGGER_TYPE = "manualTrigger";
   public static final String PIPELINE_MANUAL_TRIGGER_TYPE_CODE_TRIGGER = "codeTrigger";
+
+  public static final String PIPELINE_BUILD_OBJECT_BRANCH = "buildBranch";
+  public static final String PIPELINE_BUILD_OBJECT_TAG = "buildTag";
+  public static final String PIPELINE_BUILD_OBJECT_ = "buildPRID";
 }
